@@ -18,9 +18,6 @@ namespace Start
         [DllImport("user32")]
         public static extern void keybd_event(byte bVk, byte bScan, int dwFlags, int
 dwExtraInfo);
-        private const byte VK_MENU = 0x12;
-        private const byte VK_TAB = 0x09;
-        private const int KEYEVENTF_EXTENDEDKEY = 0x01;
         private const int KEYEVENTF_KEYUP = 0x02;
 
         public Form1()
@@ -39,13 +36,13 @@ dwExtraInfo);
         {
             if (Win32.GetIdleTime() > sec)
             {
-                keybd_event(VK_MENU, 0, 0, 0);
-                keybd_event(VK_TAB, 0, 0, 0);
+                keybd_event((byte)Keys.Menu, 0, 0, 0);
+                keybd_event((byte)Keys.Tab, 0, 0, 0);
                 System.Threading.Thread.Sleep(1000);
-                keybd_event(VK_TAB, 0, 0, 0);
+                keybd_event((byte)Keys.Tab, 0, 0, 0);
                 System.Threading.Thread.Sleep(1000);
-                keybd_event(VK_MENU, 0, KEYEVENTF_KEYUP, 0);
-                keybd_event(VK_MENU, 0, KEYEVENTF_KEYUP, 0);
+                keybd_event((byte)Keys.Menu, 0, KEYEVENTF_KEYUP, 0);
+                keybd_event((byte)Keys.Tab, 0, KEYEVENTF_KEYUP, 0);
             }
             else
             {
@@ -60,7 +57,7 @@ dwExtraInfo);
             if (textBox1.Text != "")
                 a = Convert.ToInt32(textBox1.Text);
             if (textBox2.Text != "")
-                b = Convert.ToInt32(textBox1.Text);
+                b = Convert.ToInt32(textBox2.Text);
             sec = (a * 60 * 1000) + (b * 1000);
         }
 
