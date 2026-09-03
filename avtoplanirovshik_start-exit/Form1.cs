@@ -6,7 +6,6 @@ namespace avtoplanirovshik_start_exit
 {
     public partial class Form1 : Form
     {
-        //
         static string path = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\avtoplanirovshik_start-exit.git";
         string file_start = path + @"\avtosapusk.txt";
         string file_exit = path + @"\exit.txt";
