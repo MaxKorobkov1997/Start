@@ -1,0 +1,10 @@
+D:\Мои программы\Space\bin\Debug\Space.exe.config
+D:\Мои программы\Space\bin\Debug\Space.exe
+D:\Мои программы\Space\bin\Debug\Space.pdb
+D:\Мои программы\Space\obj\Debug\Space.csproj.AssemblyReference.cache
+D:\Мои программы\Space\obj\Debug\Space.Form1.resources
+D:\Мои программы\Space\obj\Debug\Space.Properties.Resources.resources
+D:\Мои программы\Space\obj\Debug\Space.csproj.GenerateResource.cache
+D:\Мои программы\Space\obj\Debug\Space.csproj.CoreCompileInputs.cache
+D:\Мои программы\Space\obj\Debug\Space.exe
+D:\Мои программы\Space\obj\Debug\Space.pdb

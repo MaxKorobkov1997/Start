@@ -1,0 +1,17 @@
+﻿# Папки сборки (обязательно игнорируем!)
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+bin/
+obj/
+
+# Файлы настроек Visual Studio (личные для тебя)
+.vs/
+*.user
+*.suo
+*.slnx
+*.sln.docstates
+
+# Файлы публикации
+publish/
