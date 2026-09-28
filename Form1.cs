@@ -2,7 +2,9 @@ using Start.Properties;
 using System.Diagnostics;
 using System.Net;
 using System.Runtime.InteropServices;
+using static System.Windows.Forms.AxHost;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.Button;
 
 namespace Start
 {
@@ -27,7 +29,11 @@ dwExtraInfo);
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            if (!File.Exists(Static.path))
+                Directory.CreateDirectory(Static.path);
+                comboBox1.DataSource = Enum.GetValues(typeof(Keys));
             notifyIcon1.BalloonTipTitle = "Сохранено";
+            LoadSettings();
 
             //SendKeys.SendWait("%+{TAB}");
         }
@@ -36,13 +42,28 @@ dwExtraInfo);
         {
             if (Win32.GetIdleTime() > sec)
             {
-                keybd_event((byte)Keys.Menu, 0, 0, 0);
-                keybd_event((byte)Keys.Tab, 0, 0, 0);
-                System.Threading.Thread.Sleep(1000);
-                keybd_event((byte)Keys.Tab, 0, 0, 0);
-                System.Threading.Thread.Sleep(1000);
-                keybd_event((byte)Keys.Menu, 0, KEYEVENTF_KEYUP, 0);
-                keybd_event((byte)Keys.Tab, 0, KEYEVENTF_KEYUP, 0);
+                if (checkBox2.Checked == true)
+                {
+                    keybd_event((byte)Keys.Menu, 0, 0, 0);
+                    keybd_event((byte)Keys.Tab, 0, 0, 0);
+                    System.Threading.Thread.Sleep(1000);
+                    keybd_event((byte)Keys.Tab, 0, 0, 0);
+                    System.Threading.Thread.Sleep(1000);
+                    keybd_event((byte)Keys.Menu, 0, KEYEVENTF_KEYUP, 0);
+                    keybd_event((byte)Keys.Tab, 0, KEYEVENTF_KEYUP, 0);
+                }
+                else
+                {
+                    try
+                    {
+                        if (comboBox1.SelectedItem is Keys a)
+                        {
+                            keybd_event((byte)a, 0, 0, 0);
+                            keybd_event((byte)a, 0, KEYEVENTF_KEYUP, 0);
+                        }
+                    }
+                    catch { }
+                }
             }
             else
             {
@@ -59,6 +80,7 @@ dwExtraInfo);
             if (textBox2.Text != "")
                 b = Convert.ToInt32(textBox2.Text);
             sec = (a * 60 * 1000) + (b * 1000);
+            SaveSettings();
         }
 
         private void panel1_MouseDown(object sender, MouseEventArgs e)
@@ -91,6 +113,45 @@ dwExtraInfo);
         private void закрытьToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Close();
+        }
+        public void LoadSettings()
+        {
+            if (!File.Exists(Static.settingsPath)) return; // первый запуск — всё по умолчанию
+
+            var json = File.ReadAllText(Static.settingsPath);
+            var settings = System.Text.Json.JsonSerializer.Deserialize<AppSeting>(json);
+
+            if (settings != null)
+            {
+                checkBox1.Checked = settings.chec1;
+                checkBox2.Checked = settings.chec2;
+                textBox1.Text = settings.min;
+                textBox2.Text= settings.sec;
+                if (!string.IsNullOrEmpty(settings.key))
+                {
+                    if (Enum.TryParse<Keys>(settings.key, out var parsedKey))
+                    {
+                        // Ищем элемент в DataSource (там лежат Keys)
+                        var item = comboBox1.Items.Cast<Keys>()
+                            .FirstOrDefault(k => k == parsedKey);
+
+                        if (item != null)
+                            comboBox1.SelectedItem = item;
+                    }
+                }
+            }
+        }
+        private void SaveSettings()
+        {
+            var settings = new AppSeting
+            {
+                chec1 = checkBox1.Checked,
+                chec2 = checkBox2.Checked,
+                key = comboBox1.Text,
+                min = textBox1.Text,
+                sec = textBox2.Text,
+            };
+            File.WriteAllText(Static.settingsPath, System.Text.Json.JsonSerializer.Serialize(settings));
         }
     }
 }
