@@ -35,7 +35,7 @@ dwExtraInfo);
             notifyIcon1.BalloonTipTitle = "Сохранено";
             LoadSettings();
 
-            //SendKeys.SendWait("%+{TAB}");
+            //SendKeys.SendWait("%+{TAB}");1
         }
 
         private void timer1_Tick(object sender, EventArgs e)
@@ -85,6 +85,7 @@ dwExtraInfo);
 
         private void panel1_MouseDown(object sender, MouseEventArgs e)
         {
+            ReleaseCapture();
             SendMessage(Handle, 0x112, 0xf012, 0);
         }
 
