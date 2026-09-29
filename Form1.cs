@@ -22,6 +22,8 @@ namespace Start
 dwExtraInfo);
         private const int KEYEVENTF_KEYUP = 0x02;
 
+        Keys keys;
+
         public Form1()
         {
             InitializeComponent();
@@ -56,11 +58,9 @@ dwExtraInfo);
                 {
                     try
                     {
-                        if (comboBox1.SelectedItem is Keys a)
-                        {
-                            keybd_event((byte)a, 0, 0, 0);
-                            keybd_event((byte)a, 0, KEYEVENTF_KEYUP, 0);
-                        }
+                        
+                            keybd_event((byte)keys, 0, 0, 0);
+                            keybd_event((byte)keys, 0, KEYEVENTF_KEYUP, 0);
                     }
                     catch { }
                 }
@@ -80,7 +80,15 @@ dwExtraInfo);
             if (textBox2.Text != "")
                 b = Convert.ToInt32(textBox2.Text);
             sec = (a * 60 * 1000) + (b * 1000);
-            SaveSettings();
+            if (comboBox1.SelectedItem is Keys k)
+            {
+                keys = k;
+                SaveSettings();
+            }
+            else
+            {
+                MessageBox.Show("Кнопка ни подходит");
+            }
         }
 
         private void panel1_MouseDown(object sender, MouseEventArgs e)
@@ -137,7 +145,10 @@ dwExtraInfo);
                             .FirstOrDefault(k => k == parsedKey);
 
                         if (item != null)
+                        {
+                            keys = item;
                             comboBox1.SelectedItem = item;
+                        }
                     }
                 }
             }
